@@ -4,6 +4,7 @@
 #include<glm/glm.hpp>
 #include<iostream>
 #include<ctime>
+
 void Visualization::init(const int _width, const int _height) {
 	srand(time(0));
 	width = _width;
@@ -31,6 +32,7 @@ void Visualization::init(const int _width, const int _height) {
 	buttons.push_back(Button{ Assets::textures["Button"], glm::vec2(width - 200.0f,height - 90.0f),glm::vec2(100,20),defaultColor,"automaticMode",width,height });
 	buttons.back().active = true;
 	buttons.push_back(Button{ Assets::textures["Button"], glm::vec2(width - 200.0f,height - 130.0f),glm::vec2(100,20),defaultColor,"stepByStepMode",width,height });
+	buttons.push_back(Button{ Assets::textures["Button"], glm::vec2(width - 30.0f,height - 20.0f),glm::vec2(30,20),defaultColor,"Clear",width,height });
 	startPosition.x = width / 2;
 	startPosition.y = height-50.0f;
 	circleWidth = 20.0f; 
@@ -43,20 +45,15 @@ void Visualization::init(const int _width, const int _height) {
 void Visualization::update(float dt) {
 	stepTimer += speedAnimation * dt;
 	timeBetweenTheClicks += 1.5f * dt;
-	//comment = "";
 	if (glfwGetKey(Window::window, GLFW_KEY_A) == GLFW_PRESS && timeBetweenTheClicks > 1.0f) {
 		if (stepByStepMode) {
 			backStep = true;
-			/*if (indexOfCurrentComment != 0) indexOfCurrentComment--;
-			comment = comments[indexOfCurrentComment];*/
 		}
 		timeBetweenTheClicks = 0.0f;
 	}
 	if (glfwGetKey(Window::window, GLFW_KEY_D) == GLFW_PRESS && timeBetweenTheClicks > 1.0f) {
 		if (stepByStepMode) {
 			nextStep = true;
-			/*if (comments.size() - 1 != indexOfCurrentComment) indexOfCurrentComment++;
-			comment = comments[indexOfCurrentComment];*/
 		}
 		timeBetweenTheClicks = 0.0f;
 	}
@@ -102,7 +99,6 @@ void Visualization::update(float dt) {
 				}
 			savePositions();
 			comments.push_back(comment);
-			indexOfCurrentComment++;
 			numberOfStepBack++;
 		}
 		else if (pop) {
@@ -126,10 +122,12 @@ void Visualization::update(float dt) {
 				circles[iForSwap].value = t;
 				swap = false;
 				wasSwap = true;
+				comment = "Swap the elements " + std::to_string(circles[iCurrent].value) + " and " + std::to_string(circles[iForSwap].value);
 			}
 			else if (iCurrent * 2 + 1 >= circles.size()) {
 				circles[iCurrent].active = false;
 				pop = false;
+				comment = "The element " + std::to_string(circles[iCurrent].value) + " is at the very bottom, the descent is finished";
 			}
 			else if (comparison) {
 				comparison = false;
@@ -140,6 +138,7 @@ void Visualization::update(float dt) {
 						circles[iCurrent].active = false;
 						circles[iCurrent * 2 + 1].active2 = false;
 						circles[iCurrent * 2 + 2].active2 = false;
+						comment = "Element " + std::to_string(circles[iCurrent].value) + " is greater than " + std::to_string(circles[iCurrent * 2 + 1].value) + " and " + std::to_string(circles[iCurrent * 2 + 2].value) + " the descent is complete";
 						pop = false;
 						return;
 					}
@@ -160,11 +159,15 @@ void Visualization::update(float dt) {
 				}
 			}
 			else {
-				stepTimer = 1.0f;
 				comparison = true;
 				circles[iCurrent * 2 + 1].active2 = true;
 				if (iCurrent * 2 + 2 < circles.size()) circles[iCurrent * 2 + 2].active2 = true;
+				savePositions();
+				numberOfStepBack++;
 				bool temp = iCurrent * 2 + 2 < circles.size() ? 1 : 0;
+				if (temp) comment = "Compare element " + std::to_string(circles[iCurrent].value) + " with " + std::to_string(circles[iCurrent * 2 + 1].value) + " and " + std::to_string(circles[iCurrent * 2 + 2].value);
+				else comment = "Compare element " + std::to_string(circles[iCurrent].value) + " with " + std::to_string(circles[iCurrent * 2 + 1].value);
+				comments.push_back(comment);
 				if (temp) {
 					if (circles[iCurrent].value >= circles[iCurrent * 2 + 1].value &&
 						circles[iCurrent].value >= circles[iCurrent * 2 + 2].value) {
@@ -185,6 +188,7 @@ void Visualization::update(float dt) {
 					comparison = false;
 					swap = true;
 				}
+				return;
 			}
 			savePositions();
 			numberOfStepBack++;
@@ -200,7 +204,6 @@ void Visualization::update(float dt) {
 				case 2:
 					if (circles.size() == 1) {
 						comment = "The element " + std::to_string(circles.back().value) + " is the only one in the heap, we delete it";
-						comments.push_back(comment);
 						circles.pop_back();
 						step = 0;
 						deleteFirstItem = false;
@@ -209,7 +212,6 @@ void Visualization::update(float dt) {
 						iForSwap = 0;
 						circles[iForSwap].active2 = true;
 						comment = "Take the top element " + std::to_string(circles[iForSwap].value) + " of the heap";
-						comments.push_back(comment);
 					}
 					step = 3;
 					break;
@@ -223,7 +225,6 @@ void Visualization::update(float dt) {
 					circles[iForSwap].value = t;
 					step = 4;
 					comment = "Swap the first element " + std::to_string(circles[iForSwap].value) + " and the last " + std::to_string(circles[iCurrent].value) + " in places";
-					comments.push_back(comment);
 					break;
 				}
 				case 4: {
@@ -252,25 +253,23 @@ void Visualization::update(float dt) {
 				}
 			}
 			savePositions();
-			numberOfStepBack++;
 			comments.push_back(comment);
+			numberOfStepBack++;
 		}
 	} 
 	else if (stepByStepMode){
 		if (nextStep) {
 			nextStep = false;
 			if (numberOfStepBack == oldPositions.size()-1) { finishedStepMode = true; return; }
-			if (comments.size() - 1 != indexOfCurrentComment) indexOfCurrentComment++;
-			comment = comments[indexOfCurrentComment];
 			loadPositions(++numberOfStepBack);
+			comment = comments[numberOfStepBack];
 		}
 		else if (backStep) {
 			finishedStepMode = false;
 			backStep = false;
 			if (numberOfStepBack == 0) return;
-			if (indexOfCurrentComment != 0) indexOfCurrentComment--;
-			comment = comments[indexOfCurrentComment];
 			loadPositions(--numberOfStepBack);
+			comment = comments[numberOfStepBack];
 		}
 	}
 	if (!push && !pop) processInput(dt);
@@ -279,7 +278,7 @@ void Visualization::update(float dt) {
 void Visualization::renderer() {
 	render->clear(colorBackground);
 	for (int i = 0; i < circles.size();i++) {
-		circles[i].drawSelf(*render,*tree,i);
+		circles[i].drawSelf(*render, circles[(i - 1) / 2].position,i);
 	}
 	for (auto &t : buttons) {
 		t.drawSelf(*render);
@@ -377,9 +376,9 @@ void Visualization::processInput(float dt) {
 					if (circles.size() == 0) {
 						circles.push_back({ Assets::textures["circle"], startPosition,glm::vec2(circleWidth,circleHeight),defaultColor,value,true });
 						comment = "Add element " + std::to_string(circles.back().value) + " to the end of the heap.";
-						indexOfCurrentComment = 0;
 						comments.push_back(comment);
 						savePositions();
+						numberOfStepBack++;
 						return;
 					}
 					if (circles.size() == tree->positionsOfNodes.size()) tree->reset(++numOfLevels);
@@ -390,25 +389,34 @@ void Visualization::processInput(float dt) {
 					savePositions();
 					numberOfStepBack++;
 					comment = "Add element " + std::to_string(circles.back().value) + " to the end of the heap.";
-					indexOfCurrentComment = 0;
 					comments.push_back(comment);
 				}
 				if (t.type == "Pop" && circles.size() != 0) {
 					t.active = 0;
 					if (!finishedStepMode || circles.size() == 0) return;
 					clearOldPositions();
-					savePositions();
 					comments.clear();
+					savePositions();
+					comments.push_back("");
 					numberOfStepBack = 0;
 					deleteFirstItem = true;
 					iCurrent = circles.size() - 1;
 					circles[iCurrent].active = true;
 					savePositions();
+					comment = "To remove the top element of the heap, take the last element ";
+					comments.push_back(comment);
 					numberOfStepBack++;
 					step = 2;
-					comment = "To remove the top element of the heap, take the last element " + circles.back().value;
-					comments.push_back(comment);
-					indexOfCurrentComment = 0;
+				}
+				if (t.type == "Clear") {
+					t.active = false;
+					circles.clear();
+					comment = "";
+					comments.clear();
+					clearOldPositions();
+					numberOfStepBack = 0;
+					numOfLevels = 0;
+					tree->reset(numOfLevels);
 				}
 				if (t.type == "automaticMode") {
 					t.active = true;

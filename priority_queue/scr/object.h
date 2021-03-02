@@ -18,7 +18,7 @@ public:
 	bool active = false;
 	bool active2 = false;
 	Object(Texture2D _texture, glm::vec2 _position, glm::vec2 _scale, glm::vec4 color, int _value,bool _active = false);
-	void drawSelf(Renderer& renderer, Tree& tree, int i);
+	void drawSelf(Renderer& renderer, glm::vec2 positionOfParent, int i);
 private:
 };
 

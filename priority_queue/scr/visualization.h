@@ -28,7 +28,6 @@ private:
 	std::vector<std::vector<Object>> oldPositions;
 	std::vector<std::string> comments;
 	std::string comment;
-	int indexOfCurrentComment;
 	int numberOfStepBack = 0;
 	std::vector<Button> buttons;
 	Tree* tree;
@@ -48,7 +47,7 @@ private:
 	bool swap = false;
 	bool wasSwap = false;
 	bool comparison = false;
-	float speedAnimation = 0.9f;
+	float speedAnimation = 2.9f;
 	float timeBetweenTheClicks = 0.0f;
 	bool deleteFirstItem = false;
 	int step = 0;
