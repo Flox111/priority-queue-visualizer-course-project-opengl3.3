@@ -31,7 +31,7 @@ int Text::init(int const _width, int const _height) {
     }
 
     // ֿףעü ך פאיכף רנטפעא
-    std::string font_name = "Resources/Fonts/desyrel.TTF";
+    std::string font_name = "Resources/Fonts/BetinaScriptExtraCTT.TTF";
     if (font_name.empty())
     {
         std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;

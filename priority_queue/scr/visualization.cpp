@@ -76,24 +76,24 @@ void Visualization::update(float dt) {
 				circles[iCurrent].value = t;
 				swap = false;
 				wasSwap = true;
-				comment = "Changing places element " + std::to_string(circles[iCurrent].value) + " and " + std::to_string(circles[(iCurrent - 1) / 2].value);
+				comment = "Меняем местами элементы " + std::to_string(circles[iCurrent].value) + " и " + std::to_string(circles[(iCurrent - 1) / 2].value);
 			}
 			else
 				if (iCurrent == 0) {
 					circles[iCurrent].active = false;
 					push = false;
-					comment = "The element is at the beginning of the heap, no action is required.";
+					comment = "Элемент находится на вершине кучи, никаких действий больше не требуется.";
 				}
 				else {
 					if (circles[iCurrent].value < circles[(iCurrent - 1) / 2].value) {
 						circles[iCurrent].active = false;
 						push = false;
-						comment = "The element "+std::to_string(circles[iCurrent].value) + " less than " + std::to_string(circles[(iCurrent - 1) / 2].value) + ". The climb is over.";
+						comment = "Элемент "+std::to_string(circles[iCurrent].value) + " меньше чем " + std::to_string(circles[(iCurrent - 1) / 2].value) + ". Подъем закончен.";
 					}
 					else {
 						circles[(iCurrent - 1) / 2].active2 = true;
 						swap = true;
-						comment = "The element " + std::to_string(circles[iCurrent].value) + " more than " + std::to_string(circles[(iCurrent - 1) / 2].value) + ".";
+						comment = "Элемент " + std::to_string(circles[iCurrent].value) + " больше чем " + std::to_string(circles[(iCurrent - 1) / 2].value) + ".";
 
 					}
 				}
@@ -122,12 +122,12 @@ void Visualization::update(float dt) {
 				circles[iForSwap].value = t;
 				swap = false;
 				wasSwap = true;
-				comment = "Swap the elements " + std::to_string(circles[iCurrent].value) + " and " + std::to_string(circles[iForSwap].value);
+				comment = "поменяем местами элементы " + std::to_string(circles[iCurrent].value) + " и " + std::to_string(circles[iForSwap].value);
 			}
 			else if (iCurrent * 2 + 1 >= circles.size()) {
 				circles[iCurrent].active = false;
 				pop = false;
-				comment = "The element " + std::to_string(circles[iCurrent].value) + " is at the very bottom, the descent is finished";
+				comment = "Элемент " + std::to_string(circles[iCurrent].value) + " находится в самом низу, спуск закончен";
 			}
 			else if (comparison) {
 				comparison = false;
@@ -138,7 +138,7 @@ void Visualization::update(float dt) {
 						circles[iCurrent].active = false;
 						circles[iCurrent * 2 + 1].active2 = false;
 						circles[iCurrent * 2 + 2].active2 = false;
-						comment = "Element " + std::to_string(circles[iCurrent].value) + " is greater than " + std::to_string(circles[iCurrent * 2 + 1].value) + " and " + std::to_string(circles[iCurrent * 2 + 2].value) + " the descent is complete";
+						comment = "Элемент " + std::to_string(circles[iCurrent].value) + " больше чем " + std::to_string(circles[iCurrent * 2 + 1].value) + " и " + std::to_string(circles[iCurrent * 2 + 2].value) + " .Спуск закончен.";
 						pop = false;
 						return;
 					}
@@ -165,8 +165,8 @@ void Visualization::update(float dt) {
 				savePositions();
 				numberOfStepBack++;
 				bool temp = iCurrent * 2 + 2 < circles.size() ? 1 : 0;
-				if (temp) comment = "Compare element " + std::to_string(circles[iCurrent].value) + " with " + std::to_string(circles[iCurrent * 2 + 1].value) + " and " + std::to_string(circles[iCurrent * 2 + 2].value);
-				else comment = "Compare element " + std::to_string(circles[iCurrent].value) + " with " + std::to_string(circles[iCurrent * 2 + 1].value);
+				if (temp) comment = "Сравним элемент " + std::to_string(circles[iCurrent].value) + " с " + std::to_string(circles[iCurrent * 2 + 1].value) + " и " + std::to_string(circles[iCurrent * 2 + 2].value);
+				else comment = "Сравним элемент " + std::to_string(circles[iCurrent].value) + " с " + std::to_string(circles[iCurrent * 2 + 1].value);
 				comments.push_back(comment);
 				if (temp) {
 					if (circles[iCurrent].value >= circles[iCurrent * 2 + 1].value &&
@@ -203,7 +203,7 @@ void Visualization::update(float dt) {
 				break;
 				case 2:
 					if (circles.size() == 1) {
-						comment = "The element " + std::to_string(circles.back().value) + " is the only one in the heap, we delete it";
+						comment = "Элемент " + std::to_string(circles.back().value) + " единственный в куче, удаляем его";
 						circles.pop_back();
 						step = 0;
 						deleteFirstItem = false;
@@ -211,7 +211,7 @@ void Visualization::update(float dt) {
 					else {
 						iForSwap = 0;
 						circles[iForSwap].active2 = true;
-						comment = "Take the top element " + std::to_string(circles[iForSwap].value) + " of the heap";
+						comment = "Возьмём верхний элемент " + std::to_string(circles[iForSwap].value) + " кучи";
 					}
 					step = 3;
 					break;
@@ -224,7 +224,7 @@ void Visualization::update(float dt) {
 					circles[iCurrent].value = circles[iForSwap].value;
 					circles[iForSwap].value = t;
 					step = 4;
-					comment = "Swap the first element " + std::to_string(circles[iForSwap].value) + " and the last " + std::to_string(circles[iCurrent].value) + " in places";
+					comment = "Поменяем местами первый элемент " + std::to_string(circles[iForSwap].value) + " и последний " + std::to_string(circles[iCurrent].value);
 					break;
 				}
 				case 4: {
@@ -233,7 +233,7 @@ void Visualization::update(float dt) {
 					circles[iForSwap].active2 = false;
 					circles[iForSwap].active = true;
 					iCurrent = iForSwap;
-					comment = "Deleting the last element " + std::to_string(circles.back().value) + " of the heap";
+					comment = "Удаляем последний элемент " + std::to_string(circles.back().value) + " кучи";
 					circles.pop_back();
 					int t = 0;
 					for (int i = 0; i < numOfLevels; i++) t += pow(2, i);
@@ -283,7 +283,7 @@ void Visualization::renderer() {
 	for (auto &t : buttons) {
 		t.drawSelf(*render);
 	}
-	render->drawText(comment, glm::vec2(10.0f, height - 20.0f), 0.4f, defaultColor, false);
+	render->drawText(comment, glm::vec2(10.0f, height - 20.0f), 0.45f, defaultColor, false);
 }
 void Visualization::mouseCallback(GLFWwindow* window, int button, int action, int mods) {
 
@@ -375,7 +375,8 @@ void Visualization::processInput(float dt) {
 					buttons[2].value = "";
 					if (circles.size() == 0) {
 						circles.push_back({ Assets::textures["circle"], startPosition,glm::vec2(circleWidth,circleHeight),defaultColor,value,true });
-						comment = "Add element " + std::to_string(circles.back().value) + " to the end of the heap.";
+						//comment = "Add element " + std::to_string(circles.back().value) + " to the end of the heap.";
+						comment = "Добавим элемент " + std::to_string(circles.back().value) + " в конец кучи.";
 						comments.push_back(comment);
 						savePositions();
 						numberOfStepBack++;
@@ -388,7 +389,7 @@ void Visualization::processInput(float dt) {
 					circles.push_back({ Assets::textures["circle"], tree->positionsOfNodes[circles.size()],glm::vec2(circleWidth,circleHeight),defaultColor,value ,true });
 					savePositions();
 					numberOfStepBack++;
-					comment = "Add element " + std::to_string(circles.back().value) + " to the end of the heap.";
+					comment = "Добавим элемент " + std::to_string(circles.back().value) + " в конец кучи.";
 					comments.push_back(comment);
 				}
 				if (t.type == "Pop" && circles.size() != 0) {
@@ -403,7 +404,7 @@ void Visualization::processInput(float dt) {
 					iCurrent = circles.size() - 1;
 					circles[iCurrent].active = true;
 					savePositions();
-					comment = "To remove the top element of the heap, take the last element ";
+					comment = "Для удаления первого элемента кучи возьмем последний элемент ";
 					comments.push_back(comment);
 					numberOfStepBack++;
 					step = 2;

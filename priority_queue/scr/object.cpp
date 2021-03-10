@@ -15,5 +15,5 @@ void Object::drawSelf(Renderer& renderer, glm::vec2 positionOfParent, int i) {
 	else _color = color;
 	renderer.drawQuad(texture,position,scale,_color);
 	renderer.drawLine(positionOfParent,position,color);
-	renderer.drawText(std::to_string(value), { position.x,position.y }, 0.38f, _color);
+	renderer.drawText(std::to_string(value), { position.x,position.y-4.5f }, 0.4f, _color);
 }

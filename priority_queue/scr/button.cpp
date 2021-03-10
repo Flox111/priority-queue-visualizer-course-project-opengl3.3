@@ -11,9 +11,9 @@ Button::Button(Texture2D _texture, glm::vec2 _position, glm::vec2 _scale, glm::v
 void Button::drawSelf(Renderer& renderer) {
 	renderer.drawQuad(texture, position, scale, active ? glm::vec4(0.1f, 0.47f, 0.29f, 1.0f) : color);
 	if (type == "Label") {
-		renderer.drawText(value, position, 0.4f, color);
+		renderer.drawText(value, position, 0.45f, color);
 	}
-	else renderer.drawText(type, position, 0.4f, color);
+	else renderer.drawText(type, position, 0.45f, color);
 }
 void Button::pushButton() {
 	this->active = !active;
