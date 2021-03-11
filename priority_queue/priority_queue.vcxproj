@@ -25,6 +25,7 @@
     <ClCompile Include="scr\main.cpp" />
     <ClCompile Include="scr\object.cpp" />
     <ClCompile Include="scr\renderer.cpp" />
+    <ClCompile Include="scr\scrollbar.cpp" />
     <ClCompile Include="scr\shader.cpp" />
     <ClCompile Include="scr\text.cpp" />
     <ClCompile Include="scr\texture.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="scr\button.h" />
     <ClInclude Include="scr\object.h" />
     <ClInclude Include="scr\renderer.h" />
+    <ClInclude Include="scr\scrollbar.h" />
     <ClInclude Include="scr\shader.h" />
     <ClInclude Include="scr\text.h" />
     <ClInclude Include="scr\texture.h" />

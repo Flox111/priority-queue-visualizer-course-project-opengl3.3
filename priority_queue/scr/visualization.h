@@ -7,6 +7,7 @@
 #include"object.h"
 #include<map>
 #include"button.h"
+#include"scrollbar.h"
 #include"tree.h"
 #include"text.h"
 class Visualization
@@ -22,6 +23,12 @@ private:
 	void loadPositions(int i);
 	void clearOldPositions();
 	void static mouseCallback(GLFWwindow* window, int button, int action, int mods);
+	void static keyCallBack(GLFWwindow* window, int key,int scancode, int action,int mods);
+	void pushButton();
+	void popButton();
+	void clearButton();
+	void automaticModeButton();
+	void stepByStepModeButton();
 	Renderer* render;
 	Text* text;
 	std::vector<Object> circles;
@@ -29,7 +36,7 @@ private:
 	std::vector<std::string> comments;
 	std::string comment;
 	int numberOfStepBack = 0;
-	std::vector<Button> buttons;
+	//static Scrollbar scrollbar;
 	Tree* tree;
 	glm::vec2 startPosition;
 	glm::vec4 colorBackground = glm::vec4(0.76f, 0.67f, 0.58f, 0.0f);;
@@ -48,14 +55,15 @@ private:
 	bool wasSwap = false;
 	bool comparison = false;
 	float speedAnimation = 2.9f;
-	float timeBetweenTheClicks = 0.0f;
 	bool deleteFirstItem = false;
 	int step = 0;
-	bool automaticMode = true;
-	bool stepByStepMode = false;
-	bool nextStep = false;
-	bool backStep = false;
 	bool finishedStepMode = true;
 };
 static bool wasPressMouseButton = false;
 static bool wasReleaseMoseButton = false;
+static std::vector<Button> buttons;
+static std::vector<ScrollBar> scrollBars;
+static bool automaticMode = true;
+static bool stepByStepMode = false;
+static bool nextStep = false;
+static bool backStep = false;
